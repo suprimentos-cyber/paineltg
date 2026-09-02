@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Painel de Processos — TG</title>
+
+
+<style>
+
+/* =========================================================
+   CONFIGURAÇÃO GERAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    background: #101214;
+
+    color: #f4f5f6;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.header {
+
+    height: 78px;
+
+    background: #181b1f;
+
+    border-bottom:
+        1px solid #30343a;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 28px;
+
+    gap: 28px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+}
+
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    letter-spacing: .7px;
+
+    margin-right: 15px;
+}
+
+
+/* =========================================================
+   ABAS
+========================================================= */
+
+.tabs {
+
+    display: flex;
+
+    gap: 5px;
+
+    height: 100%;
+
+    align-items: center;
+}
+
+
+.tab {
+
+    border: 0;
+
+    background: transparent;
+
+    color: #9da3ab;
+
+    padding: 12px 20px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.tab:hover {
+
+    background: #24282d;
+
+    color: white;
+}
+
+
+.tab.active {
+
+    background: #2a2e34;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   RELÓGIO
+========================================================= */
+
+.clock {
+
+    margin-left: auto;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   PÁGINAS
+========================================================= */
+
+.page {
+
+    display: none;
+
+    padding:
+        26px 30px;
+
+    max-width: 1550px;
+
+    margin: auto;
+}
+
+
+.page.active {
+
+    display: block;
+}
+
+
+/* =========================================================
+   TÍTULOS
+========================================================= */
+
+h1 {
+
+    margin:
+        0 0 6px;
+
+    font-size: 28px;
+}
+
+
+.subtitle {
+
+    color: #9da3ab;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.form {
+
+    background: #191c20;
+
+    border:
+        1px solid #30343a;
+
+    border-radius: 14px;
+
+    padding: 24px;
+}
+
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+
+.field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.field.full {
+
+    grid-column:
+        1 / -1;
+}
+
+
+label {
+
+    font-size: 13px;
+
+    color: #b9bec6;
+
+    font-weight: 700;
+}
+
+
+input,
+select {
+
+    width: 100%;
+
+    background: #111315;
+
+    border:
+        1px solid #3b4047;
+
+    color: #fff;
+
+    border-radius: 8px;
+
+    padding:
+        12px 13px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+input:focus,
+select:focus {
+
+    border-color: #7d838b;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+button.primary {
+
+    background: #fff;
+
+    color: #111;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding:
+        12px 20px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+button.primary:hover {
+
+    background: #dedede;
+}
+
+
+button.secondary {
+
+    background: #2a2e34;
+
+    color: #fff;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding:
+        12px 20px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+button.secondary:hover {
+
+    background: #363b42;
+}
+
+
+button.edit {
+
+    background: #303840;
+
+    color: #fff;
+
+    border:
+        1px solid #4a525c;
+
+    border-radius: 7px;
+
+    padding:
+        7px 10px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+
+button.edit:hover {
+
+    background: #414951;
+}
+
+
+button.danger {
+
+    background: #4a2020;
+
+    color: #ffb0aa;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    padding:
+        7px 10px;
+
+    cursor: pointer;
+}
+
+
+button.danger:hover {
+
+    background: #642626;
+}
+
+
+/* =========================================================
+   AVISO DE EDIÇÃO
+========================================================= */
+
+.editing-note {
+
+    display: none;
+
+    background: #4b4219;
+
+    color: #ffe77a;
+
+    padding:
+        12px 15px;
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.editing-note.show {
+
+    display: block;
+}
+
+
+/* =========================================================
+   LISTA DOS PROCESSOS
+========================================================= */
+
+.list {
+
+    margin-top: 25px;
+
+    background: #191c20;
+
+    border:
+        1px solid #30343a;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+
+.list-title {
+
+    padding:
+        17px 20px;
+
+    font-weight: 800;
+
+    border-bottom:
+        1px solid #30343a;
+}
+
+
+.row {
+
+    display: grid;
+
+    grid-template-columns:
+        110px
+        1.2fr
+        1fr
+        1fr
+        1fr
+        170px;
+
+    gap: 12px;
+
+    padding:
+        14px 20px;
+
+    border-bottom:
+        1px solid #282c31;
+
+    align-items: center;
+}
+
+
+.row:last-child {
+
+    border-bottom: 0;
+}
+
+
+.row.head {
+
+    font-size: 12px;
+
+    color: #9da3ab;
+
+    font-weight: 800;
+}
+
+
+.row-actions {
+
+    display: flex;
+
+    gap: 6px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.badge {
+
+    display: inline-block;
+
+    padding:
+        6px 9px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+
+    font-weight: 900;
+}
+
+
+.badge.andamento {
+
+    background: #ffd21c;
+
+    color: #171717;
+}
+
+
+.badge.finalizado {
+
+    background: #24c86b;
+
+    color: #06150d;
+}
+
+
+.badge.futuro {
+
+    background: #666b73;
+
+    color: #fff;
+}
+
+
+.badge.atrasado {
+
+    background: #ff3b30;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   TEXTO VAZIO
+========================================================= */
+
+.empty {
+
+    padding: 35px;
+
+    text-align: center;
+
+    color: #858b93;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 22px;
+}
+
+
+.summary-card {
+
+    background: #191c20;
+
+    border:
+        1px solid #30343a;
+
+    border-radius: 12px;
+
+    padding:
+        16px 19px;
+}
+
+
+.number {
+
+    font-size: 32px;
+
+    font-weight: 900;
+}
+
+
+.label2 {
+
+    color: #9da3ab;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   TÍTULO DAS SEÇÕES DO PAINEL
+========================================================= */
+
+.section-title {
+
+    margin:
+        30px 0 15px;
+
+    font-size: 21px;
+
+    font-weight: 900;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.section-title:first-child {
+
+    margin-top: 0;
+}
+
+
+/* =========================================================
+   PAINEL / CARDS
+========================================================= */
+
+.board {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(350px, 1fr)
+        );
+
+    gap: 16px;
+}
+
+
+.card {
+
+    position: relative;
+
+    background: #191c20;
+
+    border:
+        2px solid #34383e;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    min-height: 200px;
+
+    overflow: hidden;
+}
+
+
+/* Barra lateral */
+
+.card:before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 7px;
+}
+
+
+/* =========================================================
+   CORES
+========================================================= */
+
+.card.andamento:before {
+
+    background: #ffd21c;
+}
+
+
+.card.finalizado:before {
+
+    background: #24c86b;
+}
+
+
+.card.futuro:before {
+
+    background: #777b82;
+}
+
+
+.card.atrasado:before {
+
+    background: #ff3b30;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO AMARELA
+========================================================= */
+
+.card.andamento {
+
+    border-color: #ffd21c;
+
+    animation:
+        yellowPulse 1.15s infinite;
+}
+
+
+@keyframes yellowPulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+            0 0 0
+            rgba(255,210,28,0);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 25px
+            rgba(255,210,28,.85);
+    }
+}
+
+
+/* =========================================================
+   ANIMAÇÃO VERMELHA
+========================================================= */
+
+.card.atrasado {
+
+    border-color: #ff3b30;
+
+    animation:
+        redPulse 1s infinite;
+}
+
+
+@keyframes redPulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+            0 0 0
+            rgba(255,59,48,0);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 28px
+            rgba(255,59,48,.9);
+    }
+}
+
+
+/* =========================================================
+   CARD FINALIZADO
+========================================================= */
+
+.card.finalizado {
+
+    border-color: #24c86b;
+
+    animation: none;
+}
+
+
+/* =========================================================
+   CONTEÚDO DOS CARDS
+========================================================= */
+
+.top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.code {
+
+    font-size: 26px;
+
+    font-weight: 900;
+}
+
+
+.client {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    margin-bottom: 7px;
+}
+
+
+.info {
+
+    color: #b8bdc5;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.delivery {
+
+    margin-top: 12px;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+
+.collaborators {
+
+    margin-top: 12px;
+
+    padding:
+        10px 12px;
+
+    background: #22262b;
+
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+.collaborators span {
+
+    color: #9da3ab;
+
+    font-size: 11px;
+
+    display: block;
+
+    margin-bottom: 3px;
+}
+
+
+.small {
+
+    font-size: 12px;
+
+    color: #8f959d;
+}
+
+
+/* =========================================================
+   ÁREA DE FINALIZADOS
+========================================================= */
+
+.finalizados-area {
+
+    margin-top: 45px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid #30343a;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .grid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .summary {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .row {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .summary {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .header {
+
+        height: auto;
+
+        min-height: 78px;
+
+        flex-wrap: wrap;
+
+        padding: 15px;
+    }
+
+
+    .clock {
+
+        display: none;
+    }
+
+
+    .page {
+
+        padding: 20px 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     CABEÇALHO
+===================================================== -->
+
+<header class="header">
+
+
+    <div class="logo">
+
+        TG — PROCESSOS
+
+    </div>
+
+
+
+    <nav class="tabs">
+
+
+        <button
+            class="tab active"
+            onclick="showPage('input', this)"
+        >
+
+            ＋ INPUT
+
+        </button>
+
+
+
+        <button
+            class="tab"
+            onclick="showPage('painel', this)"
+        >
+
+            ▣ PAINEL
+
+        </button>
+
+
+    </nav>
+
+
+
+    <div
+        class="clock"
+        id="clock"
+    ></div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     INPUT
+===================================================== -->
+
+<section
+    id="input"
+    class="page active"
+>
+
+
+    <h1>
+
+        Cadastro de processo
+
+    </h1>
+
+
+    <div class="subtitle">
+
+        Cadastre, edite e gerencie
+        todas as informações das obras.
+
+    </div>
+
+
+
+    <!-- AVISO DE EDIÇÃO -->
+
+    <div
+        id="editingNote"
+        class="editing-note"
+    >
+
+        EDITANDO PROCESSO —
+        altere os campos abaixo e clique
+        em SALVAR ALTERAÇÕES.
+
+    </div>
+
+
+
+    <!-- FORMULÁRIO -->
+
+    <form
+        class="form"
+        id="processForm"
+    >
+
+
+        <div class="grid">
+
+
+            <!-- CÓDIGO -->
+
+            <div class="field">
+
+                <label>
+                    Código / Proposta *
+                </label>
+
+                <input
+                    id="codigo"
+                    placeholder="Ex.: P02007"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CLIENTE -->
+
+            <div class="field">
+
+                <label>
+                    Cliente *
+                </label>
+
+                <input
+                    id="cliente"
+                    placeholder="Ex.: Amazon"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- OBRA -->
+
+            <div class="field">
+
+                <label>
+                    Obra
+                </label>
+
+                <input
+                    id="obra"
+                    placeholder="Ex.: GIG1"
+                >
+
+            </div>
+
+
+
+            <!-- CONTATO -->
+
+            <div class="field">
+
+                <label>
+                    Contato responsável
+                </label>
+
+                <input
+                    id="contato"
+                    placeholder="Ex.: David Gomes"
+                >
+
+            </div>
+
+
+
+            <!-- SERVIÇO -->
+
+            <div class="field">
+
+                <label>
+                    Tipo de serviço
+                </label>
+
+                <select
+                    id="servico"
+                >
+
+                    <option>
+                        Montagem
+                    </option>
+
+                    <option>
+                        Montagem e serviço
+                    </option>
+
+                    <option>
+                        Fornecimento de material
+                    </option>
+
+                    <option>
+                        Fornecimento de barra
+                    </option>
+
+                    <option>
+                        Serviço
+                    </option>
+
+                    <option>
+                        Adequação
+                    </option>
+
+                    <option>
+                        Preventiva
+                    </option>
+
+                    <option>
+                        Outro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- ENTREGA -->
+
+            <div class="field">
+
+                <label>
+                    Data prevista de entrega
+                </label>
+
+                <input
+                    id="entrega"
+                    type="date"
+                >
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="field">
+
+                <label>
+                    Status do processo *
+                </label>
+
+                <select
+                    id="status"
+                    required
+                >
+
+                    <option value="futuro">
+                        A iniciar
+                    </option>
+
+                    <option value="andamento">
+                        Em andamento
+                    </option>
+
+                    <option value="finalizado">
+                        Finalizado
+                    </option>
+
+                    <option value="atrasado">
+                        Em atraso
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- FATURAMENTO -->
+
+            <div class="field">
+
+                <label>
+                    Faturamento
+                </label>
+
+                <select
+                    id="faturamento"
+                >
+
+                    <option>
+                        Faturado
+                    </option>
+
+                    <option>
+                        Pendente
+                    </option>
+
+                    <option>
+                        Semi - faturado
+                    </option>
+
+                    <option>
+                        Não se aplica
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- COLABORADORES -->
+
+            <div class="field">
+
+                <label>
+                    Colaboradores
+                </label>
+
+                <input
+                    id="colaboradores"
+                    placeholder="Ex.: João, Carlos e Marcos"
+                >
+
+            </div>
+
+
+
+            <!-- STATUS OPERACIONAL -->
+
+            <div class="field">
+
+                <label>
+                    Status operacional
+                </label>
+
+                <input
+                    id="operacional"
+                    placeholder="Ex.: Entregar dia 20/09 na PAME"
+                >
+
+            </div>
+
+
+
+            <!-- OBSERVAÇÃO -->
+
+            <div class="field full">
+
+                <label>
+                    Observações / próxima ação
+                </label>
+
+                <input
+                    id="observacao"
+                    placeholder="Ex.: Comprar material — projetos de aterramento"
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BOTÕES -->
+
+        <div class="actions">
+
+
+            <button
+                class="primary"
+                id="submitButton"
+                type="submit"
+            >
+
+                ADICIONAR AO PAINEL
+
+            </button>
+
+
+
+            <button
+                class="secondary"
+                type="button"
+                onclick="limparFormulario()"
+            >
+
+                LIMPAR
+
+            </button>
+
+
+
+            <button
+                class="secondary"
+                id="cancelEditButton"
+                type="button"
+                onclick="cancelarEdicao()"
+                style="display:none"
+            >
+
+                CANCELAR EDIÇÃO
+
+            </button>
+
+
+        </div>
+
+
+    </form>
+
+
+
+    <!-- =================================================
+         LISTA DE PROCESSOS
+    ================================================= -->
+
+    <div class="list">
+
+
+        <div class="list-title">
+
+            Processos cadastrados
+
+        </div>
+
+
+
+        <div class="row head">
+
+
+            <div>
+                CÓDIGO
+            </div>
+
+
+            <div>
+                CLIENTE
+            </div>
+
+
+            <div>
+                OBRA
+            </div>
+
+
+            <div>
+                STATUS
+            </div>
+
+
+            <div>
+                ENTREGA
+            </div>
+
+
+            <div>
+                AÇÃO
+            </div>
+
+
+        </div>
+
+
+
+        <div id="inputList"></div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     PAINEL
+===================================================== -->
+
+<section
+    id="painel"
+    class="page"
+>
+
+
+    <h1>
+
+        PAINEL DE OBRAS
+
+    </h1>
+
+
+    <div class="subtitle">
+
+        Visão operacional em tempo real
+
+    </div>
+
+
+
+    <!-- RESUMO -->
+
+    <div class="summary">
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cAndamento"
+            >
+                0
+            </div>
+
+            <div class="label2">
+
+                Em andamento
+
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cFinalizado"
+            >
+                0
+            </div>
+
+            <div class="label2">
+
+                Finalizados
+
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cFuturo"
+            >
+                0
+            </div>
+
+            <div class="label2">
+
+                A iniciar
+
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cAtrasado"
+            >
+                0
+            </div>
+
+            <div class="label2">
+
+                Em atraso
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         PROCESSOS ATIVOS
+    ================================================= -->
+
+    <div class="section-title">
+
+        Processos em andamento
+
+    </div>
+
+
+
+    <div
+        class="board"
+        id="activeBoard"
+    ></div>
+
+
+
+    <!-- =================================================
+         PROCESSOS FINALIZADOS
+    ================================================= -->
+
+    <div class="finalizados-area">
+
+
+        <div class="section-title">
+
+            Processos finalizados
+
+        </div>
+
+
+
+        <div
+            class="board"
+            id="finishedBoard"
+        ></div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+const STORAGE_KEY =
+    "tg_processos_v3";
+
+
+/*
+    -1 significa que não estamos editando.
+*/
+
+let editIndex = -1;
+
+
+
+/* =========================================================
+   CARREGAR PROCESSOS
+========================================================= */
+
+let processos =
+    JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+    ) || [
+
+        {
+            codigo: "P02007",
+
+            cliente: "Amazon",
+
+            obra: "GIG1",
+
+            contato: "David Gomes",
+
+            servico:
+                "Fornecimento de material",
+
+            entrega:
+                "2026-09-20",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Faturado",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "ENTREGAR NO DIA 20/09 NA PAME",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01948-26",
+
+            cliente: "Racional",
+
+            obra: "Racional",
+
+            contato: "Marco Aurélio",
+
+            servico:
+                "Montagem",
+
+            entrega:
+                "2026-09-18",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Semi - faturado",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "10 sendo entregues na semana que vem",
+
+            observacao:
+                "SUBSTITUIR TODAS AS TOMADAS STECK AZUIS"
+        },
+
+
+        {
+            codigo: "P01396-24",
+
+            cliente: "Abim",
+
+            obra: "Tamboré",
+
+            contato:
+                "Leonardo Albertini",
+
+            servico:
+                "Serviço",
+
+            entrega:
+                "2026-09-25",
+
+            status:
+                "futuro",
+
+            faturamento:
+                "Pendente",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "",
+
+            observacao:
+                "COMPRA DO MATERIAL — PROJETOS DE ATERRAMENTO"
+        },
+
+
+        {
+            codigo: "P01944",
+
+            cliente: "J3M",
+
+            obra: "GRU9",
+
+            contato:
+                "Filadelfo Guimarães",
+
+            servico:
+                "Montagem e serviço",
+
+            entrega:
+                "",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Pendente",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "PROCESSO ESTÁ NAS MÃOS DA PROPAINEL",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01973",
+
+            cliente: "Vertiv",
+
+            obra: "Vertiv",
+
+            contato:
+                "Laizza Garcia",
+
+            servico:
+                "Fornecimento de barra",
+
+            entrega:
+                "",
+
+            status:
+                "finalizado",
+
+            faturamento:
+                "Faturado",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "FINALIZADO",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01544",
+
+            cliente: "Engemon",
+
+            obra: "Bradesco",
+
+            contato:
+                "Ariane Gasparoto",
+
+            servico:
+                "Serviço",
+
+            entrega:
+                "2026-08-22",
+
+            status:
+                "atrasado",
+
+            faturamento:
+                "Faturado",
+
+            colaboradores:
+                "",
+
+            operacional:
+                "EXECUÇÃO 22/08",
+
+            observacao:
+                ""
+        }
+
+    ];
+
+
+
+/* =========================================================
+   NOMES DOS STATUS
+========================================================= */
+
+const statusNome = {
+
+    andamento:
+        "EM ANDAMENTO",
+
+    finalizado:
+        "FINALIZADO",
+
+    futuro:
+        "A INICIAR",
+
+    atrasado:
+        "EM ATRASO"
+
+};
+
+
+
+/* =========================================================
+   SALVAR
+========================================================= */
+
+function save() {
+
+    localStorage.setItem(
+
+        STORAGE_KEY,
+
+        JSON.stringify(processos)
+
+    );
+
+}
+
+
+
+/* =========================================================
+   FORMATAR DATA
+========================================================= */
+
+function formatDate(valor) {
+
+    if (!valor) {
+
+        return "A definir";
+
+    }
+
+
+    const partes =
+        valor.split("-");
+
+
+    return (
+
+        partes[2]
+        + "/"
+        + partes[1]
+        + "/"
+        + partes[0]
+
+    );
+
+}
+
+
+
+/* =========================================================
+   TROCAR ABA
+========================================================= */
+
+function showPage(
+    id,
+    botao
+) {
+
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            pagina => {
+
+                pagina.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(
+            aba => {
+
+                aba.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+
+    document
+        .getElementById(id)
+        .classList.add("active");
+
+
+
+    botao.classList.add("active");
+
+
+
+    render();
+
+}
+
+
+
+/* =========================================================
+   ADICIONAR / EDITAR PROCESSO
+========================================================= */
+
+document
+    .getElementById("processForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+
+            const processo = {
+
+
+                codigo:
+                    document
+                        .getElementById("codigo")
+                        .value
+                        .trim(),
+
+
+                cliente:
+                    document
+                        .getElementById("cliente")
+                        .value
+                        .trim(),
+
+
+                obra:
+                    document
+                        .getElementById("obra")
+                        .value
+                        .trim(),
+
+
+                contato:
+                    document
+                        .getElementById("contato")
+                        .value
+                        .trim(),
+
+
+                servico:
+                    document
+                        .getElementById("servico")
+                        .value,
+
+
+                entrega:
+                    document
+                        .getElementById("entrega")
+                        .value,
+
+
+                status:
+                    document
+                        .getElementById("status")
+                        .value,
+
+
+                faturamento:
+                    document
+                        .getElementById("faturamento")
+                        .value,
+
+
+                colaboradores:
+                    document
+                        .getElementById("colaboradores")
+                        .value
+                        .trim(),
+
+
+                operacional:
+                    document
+                        .getElementById("operacional")
+                        .value
+                        .trim(),
+
+
+                observacao:
+                    document
+                        .getElementById("observacao")
+                        .value
+                        .trim()
+
+            };
+
+
+
+            /* -----------------------------------------
+               NOVO PROCESSO
+            ----------------------------------------- */
+
+            if (
+                editIndex === -1
+            ) {
+
+
+                processos.push(
+                    processo
+                );
+
+
+                alert(
+                    "Processo adicionado ao painel!"
+                );
+
+
+            }
+
+
+            /* -----------------------------------------
+               EDITANDO PROCESSO
+            ----------------------------------------- */
+
+            else {
+
+
+                processos[
+                    editIndex
+                ] = processo;
+
+
+                alert(
+                    "Processo atualizado com sucesso!"
+                );
+
+
+                editIndex = -1;
+
+
+                document
+                    .getElementById(
+                        "submitButton"
+                    )
+                    .textContent =
+                    "ADICIONAR AO PAINEL";
+
+
+                document
+                    .getElementById(
+                        "cancelEditButton"
+                    )
+                    .style.display =
+                    "none";
+
+
+                document
+                    .getElementById(
+                        "editingNote"
+                    )
+                    .classList
+                    .remove("show");
+
+            }
+
+
+
+            save();
+
+
+            render();
+
+
+            limparFormulario();
+
+        }
+    );
+
+
+
+/* =========================================================
+   EDITAR PROCESSO
+========================================================= */
+
+function editar(indice) {
+
+
+    const p =
+        processos[indice];
+
+
+
+    /*
+       Preenche todos os campos
+    */
+
+    document
+        .getElementById("codigo")
+        .value =
+        p.codigo || "";
+
+
+    document
+        .getElementById("cliente")
+        .value =
+        p.cliente || "";
+
+
+    document
+        .getElementById("obra")
+        .value =
+        p.obra || "";
+
+
+    document
+        .getElementById("contato")
+        .value =
+        p.contato || "";
+
+
+    document
+        .getElementById("servico")
+        .value =
+        p.servico || "Montagem";
+
+
+    document
+        .getElementById("entrega")
+        .value =
+        p.entrega || "";
+
+
+    document
+        .getElementById("status")
+        .value =
+        p.status || "futuro";
+
+
+    document
+        .getElementById("faturamento")
+        .value =
+        p.faturamento || "Faturado";
+
+
+    document
+        .getElementById("colaboradores")
+        .value =
+        p.colaboradores || "";
+
+
+    document
+        .getElementById("operacional")
+        .value =
+        p.operacional || "";
+
+
+    document
+        .getElementById("observacao")
+        .value =
+        p.observacao || "";
+
+
+
+    /*
+       Guarda qual processo
+       está sendo editado.
+    */
+
+    editIndex =
+        indice;
+
+
+
+    /*
+       Muda botão.
+    */
+
+    document
+        .getElementById(
+            "submitButton"
+        )
+        .textContent =
+        "SALVAR ALTERAÇÕES";
+
+
+
+    /*
+       Mostra botão cancelar.
+    */
+
+    document
+        .getElementById(
+            "cancelEditButton"
+        )
+        .style.display =
+        "inline-block";
+
+
+
+    /*
+       Mostra aviso.
+    */
+
+    document
+        .getElementById(
+            "editingNote"
+        )
+        .classList
+        .add("show");
+
+
+
+    /*
+       Volta para o topo.
+    */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+
+/* =========================================================
+   CANCELAR EDIÇÃO
+========================================================= */
+
+function cancelarEdicao() {
+
+
+    editIndex = -1;
+
+
+    limparFormulario();
+
+
+
+    document
+        .getElementById(
+            "submitButton"
+        )
+        .textContent =
+        "ADICIONAR AO PAINEL";
+
+
+
+    document
+        .getElementById(
+            "cancelEditButton"
+        )
+        .style.display =
+        "none";
+
+
+
+    document
+        .getElementById(
+            "editingNote"
+        )
+        .classList
+        .remove("show");
+
+}
+
+
+
+/* =========================================================
+   LIMPAR FORMULÁRIO
+========================================================= */
+
+function limparFormulario() {
+
+
+    document
+        .getElementById(
+            "processForm"
+        )
+        .reset();
+
+
+
+    if (
+        editIndex === -1
+    ) {
+
+        document
+            .getElementById(
+                "status"
+            )
+            .value =
+            "futuro";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   EXCLUIR PROCESSO
+========================================================= */
+
+function remover(indice) {
+
+
+    if (
+        confirm(
+            "Tem certeza que deseja remover este processo?"
+        )
+    ) {
+
+
+        /*
+           Se estiver editando esse processo,
+           cancela a edição.
+        */
+
+        if (
+            editIndex === indice
+        ) {
+
+            cancelarEdicao();
+
+        }
+
+
+        processos.splice(
+            indice,
+            1
+        );
+
+
+        save();
+
+
+        render();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   LISTA DO INPUT
+========================================================= */
+
+function renderInput() {
+
+
+    const elemento =
+        document
+            .getElementById(
+                "inputList"
+            );
+
+
+
+    if (
+        processos.length === 0
+    ) {
+
+
+        elemento.innerHTML =
+
+            `
+            <div class="empty">
+
+                Nenhum processo cadastrado.
+
+            </div>
+            `;
+
+
+        return;
+
+    }
+
+
+
+    elemento.innerHTML =
+
+        processos
+            .map(
+                (p, i) => `
+
+                <div class="row">
+
+
+                    <div>
+
+                        <b>
+                            ${p.codigo}
+                        </b>
+
+                    </div>
+
+
+                    <div>
+
+                        ${p.cliente}
+
+                        <br>
+
+                        <span class="small">
+
+                            ${p.contato || ""}
+
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        ${p.obra || "—"}
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="badge ${p.status}"
+                        >
+
+                            ${statusNome[p.status]}
+
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        ${formatDate(p.entrega)}
+
+                    </div>
+
+
+                    <div class="row-actions">
+
+
+                        <button
+                            class="edit"
+                            onclick="editar(${i})"
+                        >
+
+                            Editar
+
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="remover(${i})"
+                        >
+
+                            Excluir
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+            `
+            )
+            .join("");
+
+}
+
+
+
+/* =========================================================
+   CRIAR CARD
+========================================================= */
+
+function criarCard(
+    p
+) {
+
+
+    return `
+
+        <article
+            class="card ${p.status}"
+        >
+
+
+            <div class="top">
+
+
+                <div class="code">
+
+                    ${p.codigo}
+
+                </div>
+
+
+                <div
+                    class="badge ${p.status}"
+                >
+
+                    ${statusNome[p.status]}
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="client">
+
+                ${p.cliente}
+
+            </div>
+
+
+
+            <div class="info">
+
+
+                Obra:
+
+                ${p.obra || "—"}
+
+
+                <br>
+
+
+                Contato:
+
+                ${p.contato || "—"}
+
+
+                <br>
+
+
+                Serviço:
+
+                ${p.servico || "—"}
+
+
+                <br>
+
+
+                Faturamento:
+
+                ${p.faturamento || "—"}
+
+
+            </div>
+
+
+
+            <div class="delivery">
+
+                Entrega:
+
+                ${formatDate(p.entrega)}
+
+            </div>
+
+
+
+            ${
+                p.colaboradores
+
+                ?
+
+                `
+
+                <div
+                    class="collaborators"
+                >
+
+                    <span>
+                        COLABORADORES
+                    </span>
+
+                    ${p.colaboradores}
+
+                </div>
+
+                `
+
+                :
+
+                ""
+            }
+
+
+
+            ${
+                p.operacional
+
+                ?
+
+                `
+
+                <div
+                    class="info"
+                    style="margin-top:10px"
+                >
+
+                    <b>
+
+                        ${p.operacional}
+
+                    </b>
+
+                </div>
+
+                `
+
+                :
+
+                ""
+            }
+
+
+
+            ${
+                p.observacao
+
+                ?
+
+                `
+
+                <div
+                    class="info"
+                    style="margin-top:6px"
+                >
+
+                    ${p.observacao}
+
+                </div>
+
+                `
+
+                :
+
+                ""
+            }
+
+
+        </article>
+
+    `;
+
+}
+
+
+
+/* =========================================================
+   PAINEL
+========================================================= */
+
+function renderPanel() {
+
+
+    const activeBoard =
+        document
+            .getElementById(
+                "activeBoard"
+            );
+
+
+    const finishedBoard =
+        document
+            .getElementById(
+                "finishedBoard"
+            );
+
+
+
+    /* -----------------------------------------
+       CONTADORES
+    ----------------------------------------- */
+
+    document
+        .getElementById(
+            "cAndamento"
+        )
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "andamento"
+        ).length;
+
+
+
+    document
+        .getElementById(
+            "cFinalizado"
+        )
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "finalizado"
+        ).length;
+
+
+
+    document
+        .getElementById(
+            "cFuturo"
+        )
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "futuro"
+        ).length;
+
+
+
+    document
+        .getElementById(
+            "cAtrasado"
+        )
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "atrasado"
+        ).length;
+
+
+
+    /* -----------------------------------------
+       PROCESSOS ATIVOS
+       
+       Tudo que NÃO estiver finalizado.
+    ----------------------------------------- */
+
+    const ativos =
+
+        processos.filter(
+            p =>
+                p.status !==
+                "finalizado"
+        );
+
+
+
+    if (
+        ativos.length === 0
+    ) {
+
+        activeBoard.innerHTML =
+
+            `
+            <div class="empty">
+
+                Nenhum processo
+                em andamento ou pendente.
+
+            </div>
+            `;
+
+    }
+
+    else {
+
+        activeBoard.innerHTML =
+
+            ativos
+                .map(
+                    p =>
+                        criarCard(p)
+                )
+                .join("");
+
+    }
+
+
+
+    /* -----------------------------------------
+       PROCESSOS FINALIZADOS
+       
+       Ficam em área separada.
+    ----------------------------------------- */
+
+    const finalizados =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "finalizado"
+        );
+
+
+
+    if (
+        finalizados.length === 0
+    ) {
+
+        finishedBoard.innerHTML =
+
+            `
+            <div class="empty">
+
+                Nenhum processo finalizado.
+
+            </div>
+            `;
+
+    }
+
+    else {
+
+        finishedBoard.innerHTML =
+
+            finalizados
+                .map(
+                    p =>
+                        criarCard(p)
+                )
+                .join("");
+
+    }
+
+}
+
+
+
+/* =========================================================
+   RENDER GERAL
+========================================================= */
+
+function render() {
+
+
+    renderInput();
+
+
+    renderPanel();
+
+}
+
+
+
+/* =========================================================
+   RELÓGIO
+========================================================= */
+
+function atualizarRelogio() {
+
+
+    const agora =
+        new Date();
+
+
+
+    document
+        .getElementById(
+            "clock"
+        )
+        .textContent =
+
+        agora.toLocaleTimeString(
+            "pt-BR",
+            {
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit"
+
+            }
+        );
+
+}
+
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+render();
+
+
+atualizarRelogio();
+
+
+setInterval(
+    atualizarRelogio,
+    1000
+);
+
+</script>
+
+</body>
+
+</html>
