@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel de Processos — TG</title>
+
+<style>
+
+/* =========================================================
+   CONFIGURAÇÃO GERAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #101214;
+    color: #f4f5f6;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+.header {
+    height: 78px;
+
+    background: #181b1f;
+
+    border-bottom: 1px solid #30343a;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 28px;
+
+    gap: 28px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+}
+
+
+.logo {
+    font-size: 24px;
+
+    font-weight: 900;
+
+    letter-spacing: .7px;
+
+    margin-right: 15px;
+}
+
+
+/* =========================================================
+   ABAS
+========================================================= */
+
+.tabs {
+    display: flex;
+
+    gap: 5px;
+
+    height: 100%;
+
+    align-items: center;
+}
+
+
+.tab {
+    border: 0;
+
+    background: transparent;
+
+    color: #9da3ab;
+
+    padding: 12px 20px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.tab:hover {
+    background: #24282d;
+
+    color: white;
+}
+
+
+.tab.active {
+    background: #2a2e34;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   RELÓGIO
+========================================================= */
+
+.clock {
+    margin-left: auto;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   PÁGINAS
+========================================================= */
+
+.page {
+    display: none;
+
+    padding: 26px 30px;
+
+    max-width: 1500px;
+
+    margin: auto;
+}
+
+
+.page.active {
+    display: block;
+}
+
+
+/* =========================================================
+   TÍTULOS
+========================================================= */
+
+h1 {
+    margin: 0 0 6px;
+
+    font-size: 28px;
+}
+
+
+.subtitle {
+    color: #9da3ab;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+.form {
+    background: #191c20;
+
+    border: 1px solid #30343a;
+
+    border-radius: 14px;
+
+    padding: 24px;
+}
+
+
+.grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+
+.field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+
+label {
+    font-size: 13px;
+
+    color: #b9bec6;
+
+    font-weight: 700;
+}
+
+
+input,
+select {
+
+    width: 100%;
+
+    background: #111315;
+
+    border: 1px solid #3b4047;
+
+    color: #fff;
+
+    border-radius: 8px;
+
+    padding: 12px 13px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+input:focus,
+select:focus {
+
+    border-color: #7d838b;
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+button.primary {
+
+    background: #fff;
+
+    color: #111;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding: 12px 20px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+button.primary:hover {
+
+    background: #dedede;
+}
+
+
+button.secondary {
+
+    background: #2a2e34;
+
+    color: #fff;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding: 12px 20px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+button.secondary:hover {
+
+    background: #363b42;
+}
+
+
+button.danger {
+
+    background: #4a2020;
+
+    color: #ffb0aa;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    padding: 7px 10px;
+
+    cursor: pointer;
+}
+
+
+button.danger:hover {
+
+    background: #642626;
+}
+
+
+/* =========================================================
+   LISTA DA ABA INPUT
+========================================================= */
+
+.list {
+
+    margin-top: 25px;
+
+    background: #191c20;
+
+    border: 1px solid #30343a;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+
+.list-title {
+
+    padding: 17px 20px;
+
+    font-weight: 800;
+
+    border-bottom: 1px solid #30343a;
+}
+
+
+.row {
+
+    display: grid;
+
+    grid-template-columns:
+        110px
+        1.2fr
+        1fr
+        1fr
+        1fr
+        105px;
+
+    gap: 12px;
+
+    padding: 14px 20px;
+
+    border-bottom: 1px solid #282c31;
+
+    align-items: center;
+}
+
+
+.row:last-child {
+
+    border-bottom: 0;
+}
+
+
+.row.head {
+
+    font-size: 12px;
+
+    color: #9da3ab;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.badge {
+
+    display: inline-block;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+
+    font-weight: 900;
+}
+
+
+.badge.andamento {
+
+    background: #ffd21c;
+
+    color: #171717;
+}
+
+
+.badge.finalizado {
+
+    background: #24c86b;
+
+    color: #06150d;
+}
+
+
+.badge.futuro {
+
+    background: #666b73;
+
+    color: #fff;
+}
+
+
+.badge.atrasado {
+
+    background: #ff3b30;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   TEXTO VAZIO
+========================================================= */
+
+.empty {
+
+    padding: 35px;
+
+    text-align: center;
+
+    color: #858b93;
+}
+
+
+/* =========================================================
+   RESUMO DO PAINEL
+========================================================= */
+
+.summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 22px;
+}
+
+
+.summary-card {
+
+    background: #191c20;
+
+    border: 1px solid #30343a;
+
+    border-radius: 12px;
+
+    padding: 16px 19px;
+}
+
+
+.number {
+
+    font-size: 32px;
+
+    font-weight: 900;
+}
+
+
+.label2 {
+
+    color: #9da3ab;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   PAINEL
+========================================================= */
+
+.board {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(350px, 1fr)
+        );
+
+    gap: 16px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+
+    position: relative;
+
+    background: #191c20;
+
+    border: 2px solid #34383e;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    min-height: 175px;
+
+    overflow: hidden;
+}
+
+
+/* Barra lateral */
+
+.card:before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 7px;
+}
+
+
+/* =========================================================
+   CORES DOS CARDS
+========================================================= */
+
+.card.andamento:before {
+
+    background: #ffd21c;
+}
+
+
+.card.finalizado:before {
+
+    background: #24c86b;
+}
+
+
+.card.futuro:before {
+
+    background: #777b82;
+}
+
+
+.card.atrasado:before {
+
+    background: #ff3b30;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO AMARELA
+========================================================= */
+
+.card.andamento {
+
+    border-color: #ffd21c;
+
+    animation: yellowPulse 1.15s infinite;
+}
+
+
+@keyframes yellowPulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+            0 0 0 rgba(255,210,28,0);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 25px rgba(255,210,28,.85);
+    }
+}
+
+
+/* =========================================================
+   ANIMAÇÃO VERMELHA
+========================================================= */
+
+.card.atrasado {
+
+    border-color: #ff3b30;
+
+    animation: redPulse 1s infinite;
+}
+
+
+@keyframes redPulse {
+
+    0%,
+    100% {
+
+        box-shadow:
+            0 0 0 rgba(255,59,48,0);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 28px rgba(255,59,48,.9);
+    }
+}
+
+
+/* =========================================================
+   CONTEÚDO DOS CARDS
+========================================================= */
+
+.top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.code {
+
+    font-size: 26px;
+
+    font-weight: 900;
+}
+
+
+.client {
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    margin-bottom: 7px;
+}
+
+
+.info {
+
+    color: #b8bdc5;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+
+.delivery {
+
+    margin-top: 12px;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+
+.small {
+
+    font-size: 12px;
+
+    color: #8f959d;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .grid {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .summary {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .row {
+
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     CABEÇALHO
+====================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+        TG — PROCESSOS
+    </div>
+
+
+    <nav class="tabs">
+
+        <button
+            class="tab active"
+            onclick="showPage('input',this)"
+        >
+
+            ＋ INPUT
+
+        </button>
+
+
+        <button
+            class="tab"
+            onclick="showPage('painel',this)"
+        >
+
+            ▣ PAINEL
+
+        </button>
+
+    </nav>
+
+
+    <div
+        class="clock"
+        id="clock"
+    ></div>
+
+</header>
+
+
+
+<!-- ======================================================
+     ABA INPUT
+====================================================== -->
+
+<section
+    id="input"
+    class="page active"
+>
+
+
+    <h1>
+        Cadastro de processo
+    </h1>
+
+
+    <div class="subtitle">
+
+        Insira a obra uma vez.
+        O painel será atualizado automaticamente.
+
+    </div>
+
+
+
+    <!-- FORMULÁRIO -->
+
+    <form
+        class="form"
+        id="processForm"
+    >
+
+
+        <div class="grid">
+
+
+            <!-- CÓDIGO -->
+
+            <div class="field">
+
+                <label>
+                    Código / Proposta *
+                </label>
+
+                <input
+                    id="codigo"
+                    placeholder="Ex.: P02007"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CLIENTE -->
+
+            <div class="field">
+
+                <label>
+                    Cliente *
+                </label>
+
+                <input
+                    id="cliente"
+                    placeholder="Ex.: Amazon"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- OBRA -->
+
+            <div class="field">
+
+                <label>
+                    Obra
+                </label>
+
+                <input
+                    id="obra"
+                    placeholder="Ex.: GIG1"
+                >
+
+            </div>
+
+
+
+            <!-- CONTATO -->
+
+            <div class="field">
+
+                <label>
+                    Contato responsável
+                </label>
+
+                <input
+                    id="contato"
+                    placeholder="Ex.: David Gomes"
+                >
+
+            </div>
+
+
+
+            <!-- SERVIÇO -->
+
+            <div class="field">
+
+                <label>
+                    Tipo de serviço
+                </label>
+
+
+                <select id="servico">
+
+                    <option>
+                        Montagem
+                    </option>
+
+                    <option>
+                        Montagem e serviço
+                    </option>
+
+                    <option>
+                        Fornecimento de material
+                    </option>
+
+                    <option>
+                        Fornecimento de barra
+                    </option>
+
+                    <option>
+                        Serviço
+                    </option>
+
+                    <option>
+                        Adequação
+                    </option>
+
+                    <option>
+                        Preventiva
+                    </option>
+
+                    <option>
+                        Outro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- DATA -->
+
+            <div class="field">
+
+                <label>
+                    Data prevista de entrega
+                </label>
+
+                <input
+                    id="entrega"
+                    type="date"
+                >
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="field">
+
+                <label>
+                    Status do processo *
+                </label>
+
+
+                <select
+                    id="status"
+                    required
+                >
+
+                    <option value="futuro">
+                        A iniciar
+                    </option>
+
+                    <option value="andamento">
+                        Em andamento
+                    </option>
+
+                    <option value="finalizado">
+                        Finalizado
+                    </option>
+
+                    <option value="atrasado">
+                        Em atraso
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- FATURAMENTO -->
+
+            <div class="field">
+
+                <label>
+                    Faturamento
+                </label>
+
+
+                <select id="faturamento">
+
+                    <option>
+                        Faturado
+                    </option>
+
+                    <option>
+                        Pendente
+                    </option>
+
+                    <option>
+                        Semi - faturado
+                    </option>
+
+                    <option>
+                        Não se aplica
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- STATUS OPERACIONAL -->
+
+            <div class="field">
+
+                <label>
+                    Status operacional
+                </label>
+
+
+                <input
+                    id="operacional"
+                    placeholder="Ex.: Entregar dia 20/09 na PAME"
+                >
+
+            </div>
+
+
+
+            <!-- OBSERVAÇÃO -->
+
+            <div class="field full">
+
+                <label>
+                    Observações / próxima ação
+                </label>
+
+
+                <input
+                    id="observacao"
+                    placeholder="Ex.: Comprar material — projetos de aterramento"
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BOTÕES -->
+
+        <div class="actions">
+
+            <button
+                class="primary"
+                type="submit"
+            >
+
+                ADICIONAR AO PAINEL
+
+            </button>
+
+
+            <button
+                class="secondary"
+                type="button"
+                onclick="limparFormulario()"
+            >
+
+                LIMPAR
+
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+
+    <!-- ==================================================
+         LISTA DOS PROCESSOS
+    ================================================== -->
+
+    <div class="list">
+
+
+        <div class="list-title">
+
+            Processos cadastrados
+
+        </div>
+
+
+
+        <div class="row head">
+
+            <div>
+                CÓDIGO
+            </div>
+
+            <div>
+                CLIENTE
+            </div>
+
+            <div>
+                OBRA
+            </div>
+
+            <div>
+                STATUS
+            </div>
+
+            <div>
+                ENTREGA
+            </div>
+
+            <div>
+                AÇÃO
+            </div>
+
+        </div>
+
+
+
+        <div id="inputList"></div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================================
+     ABA PAINEL
+====================================================== -->
+
+<section
+    id="painel"
+    class="page"
+>
+
+
+    <h1>
+        PAINEL DE OBRAS
+    </h1>
+
+
+    <div class="subtitle">
+
+        Visão operacional em tempo real
+
+    </div>
+
+
+
+    <!-- RESUMO -->
+
+    <div class="summary">
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cAndamento"
+            >
+                0
+            </div>
+
+            <div class="label2">
+                Em andamento
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cFinalizado"
+            >
+                0
+            </div>
+
+            <div class="label2">
+                Finalizados
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cFuturo"
+            >
+                0
+            </div>
+
+            <div class="label2">
+                A iniciar
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div
+                class="number"
+                id="cAtrasado"
+            >
+                0
+            </div>
+
+            <div class="label2">
+                Em atraso
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- CARDS -->
+
+    <div
+        class="board"
+        id="board"
+    ></div>
+
+
+</section>
+
+
+
+<script>
+
+/* =========================================================
+   BANCO DE DADOS LOCAL
+========================================================= */
+
+const STORAGE_KEY =
+    "tg_processos_v2";
+
+
+/*
+   Tenta carregar os processos
+   que já foram cadastrados.
+
+   Se não existir nada,
+   carrega alguns exemplos.
+*/
+
+let processos =
+    JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+    ) || [
+
+        {
+            codigo: "P02007",
+
+            cliente: "Amazon",
+
+            obra: "GIG1",
+
+            contato: "David Gomes",
+
+            servico:
+                "Fornecimento de material",
+
+            entrega:
+                "2026-09-20",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Faturado",
+
+            operacional:
+                "ENTREGAR NO DIA 20/09 NA PAME",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01948-26",
+
+            cliente: "Racional",
+
+            obra: "Racional",
+
+            contato: "Marco Aurélio",
+
+            servico:
+                "Montagem",
+
+            entrega:
+                "2026-09-18",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Semi - faturado",
+
+            operacional:
+                "10 sendo entregues na semana que vem",
+
+            observacao:
+                "SUBSTITUIR TODAS AS TOMADAS STECK AZUIS"
+        },
+
+
+        {
+            codigo: "P01396-24",
+
+            cliente: "Abim",
+
+            obra: "Tamboré",
+
+            contato:
+                "Leonardo Albertini",
+
+            servico:
+                "Serviço",
+
+            entrega:
+                "2026-09-25",
+
+            status:
+                "futuro",
+
+            faturamento:
+                "Pendente",
+
+            operacional:
+                "",
+
+            observacao:
+                "COMPRA DO MATERIAL — PROJETOS DE ATERRAMENTO"
+        },
+
+
+        {
+            codigo: "P01944",
+
+            cliente: "J3M",
+
+            obra: "GRU9",
+
+            contato:
+                "Filadelfo Guimarães",
+
+            servico:
+                "Montagem e serviço",
+
+            entrega:
+                "",
+
+            status:
+                "andamento",
+
+            faturamento:
+                "Pendente",
+
+            operacional:
+                "PROCESSO ESTÁ NAS MÃOS DA PROPAINEL",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01973",
+
+            cliente: "Vertiv",
+
+            obra: "Vertiv",
+
+            contato:
+                "Laizza Garcia",
+
+            servico:
+                "Fornecimento de barra",
+
+            entrega:
+                "",
+
+            status:
+                "finalizado",
+
+            faturamento:
+                "Faturado",
+
+            operacional:
+                "FINALIZADO",
+
+            observacao:
+                ""
+        },
+
+
+        {
+            codigo: "P01544",
+
+            cliente: "Engemon",
+
+            obra: "Bradesco",
+
+            contato:
+                "Ariane Gasparoto",
+
+            servico:
+                "Serviço",
+
+            entrega:
+                "2026-08-22",
+
+            status:
+                "atrasado",
+
+            faturamento:
+                "Faturado",
+
+            operacional:
+                "EXECUÇÃO 22/08",
+
+            observacao:
+                ""
+        }
+
+    ];
+
+
+
+/* =========================================================
+   NOMES DOS STATUS
+========================================================= */
+
+const statusNome = {
+
+    andamento:
+        "EM ANDAMENTO",
+
+    finalizado:
+        "FINALIZADO",
+
+    futuro:
+        "A INICIAR",
+
+    atrasado:
+        "EM ATRASO"
+
+};
+
+
+
+/* =========================================================
+   SALVAR DADOS
+========================================================= */
+
+function save() {
+
+    localStorage.setItem(
+
+        STORAGE_KEY,
+
+        JSON.stringify(processos)
+
+    );
+
+}
+
+
+
+/* =========================================================
+   FORMATAR DATA
+========================================================= */
+
+function formatDate(valor) {
+
+    if (!valor) {
+
+        return "A definir";
+
+    }
+
+
+    const partes =
+        valor.split("-");
+
+
+    const ano =
+        partes[0];
+
+    const mes =
+        partes[1];
+
+    const dia =
+        partes[2];
+
+
+    return `${dia}/${mes}/${ano}`;
+
+}
+
+
+
+/* =========================================================
+   TROCAR DE ABA
+========================================================= */
+
+function showPage(id, botao) {
+
+
+    /*
+       Esconde todas as páginas
+    */
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            pagina =>
+                pagina.classList.remove("active")
+        );
+
+
+    /*
+       Remove active das abas
+    */
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(
+            aba =>
+                aba.classList.remove("active")
+        );
+
+
+    /*
+       Mostra página escolhida
+    */
+
+    document
+        .getElementById(id)
+        .classList.add("active");
+
+
+    /*
+       Ativa botão
+    */
+
+    botao.classList.add("active");
+
+
+    /*
+       Atualiza informações
+    */
+
+    render();
+
+}
+
+
+
+/* =========================================================
+   CADASTRAR PROCESSO
+========================================================= */
+
+document
+    .getElementById("processForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+
+            /*
+               Impede recarregar a página
+            */
+
+            event.preventDefault();
+
+
+
+            /*
+               Cria novo processo
+            */
+
+            const novoProcesso = {
+
+                codigo:
+                    document
+                        .getElementById("codigo")
+                        .value
+                        .trim(),
+
+
+                cliente:
+                    document
+                        .getElementById("cliente")
+                        .value
+                        .trim(),
+
+
+                obra:
+                    document
+                        .getElementById("obra")
+                        .value
+                        .trim(),
+
+
+                contato:
+                    document
+                        .getElementById("contato")
+                        .value
+                        .trim(),
+
+
+                servico:
+                    document
+                        .getElementById("servico")
+                        .value,
+
+
+                entrega:
+                    document
+                        .getElementById("entrega")
+                        .value,
+
+
+                status:
+                    document
+                        .getElementById("status")
+                        .value,
+
+
+                faturamento:
+                    document
+                        .getElementById("faturamento")
+                        .value,
+
+
+                operacional:
+                    document
+                        .getElementById("operacional")
+                        .value
+                        .trim(),
+
+
+                observacao:
+                    document
+                        .getElementById("observacao")
+                        .value
+                        .trim()
+
+            };
+
+
+
+            /*
+               Adiciona ao banco
+            */
+
+            processos.push(
+                novoProcesso
+            );
+
+
+
+            /*
+               Salva
+            */
+
+            save();
+
+
+
+            /*
+               Atualiza tela
+            */
+
+            render();
+
+
+
+            /*
+               Limpa formulário
+            */
+
+            limparFormulario();
+
+
+            alert(
+                "Processo adicionado ao painel!"
+            );
+
+        }
+    );
+
+
+
+/* =========================================================
+   LIMPAR FORMULÁRIO
+========================================================= */
+
+function limparFormulario() {
+
+    document
+        .getElementById("processForm")
+        .reset();
+
+}
+
+
+
+/* =========================================================
+   EXCLUIR PROCESSO
+========================================================= */
+
+function remover(indice) {
+
+
+    if (
+        confirm(
+            "Remover este processo do painel?"
+        )
+    ) {
+
+
+        processos.splice(
+            indice,
+            1
+        );
+
+
+        save();
+
+
+        render();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   RENDERIZAR LISTA DA ABA INPUT
+========================================================= */
+
+function renderInput() {
+
+
+    const elemento =
+        document
+            .getElementById("inputList");
+
+
+
+    /*
+       Nenhum processo
+    */
+
+    if (
+        !processos.length
+    ) {
+
+        elemento.innerHTML =
+            `
+            <div class="empty">
+
+                Nenhum processo cadastrado.
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    /*
+       Monta linhas
+    */
+
+    elemento.innerHTML =
+
+        processos
+            .map(
+                (p, i) => `
+
+                    <div class="row">
+
+                        <div>
+                            <b>
+                                ${p.codigo}
+                            </b>
+                        </div>
+
+
+                        <div>
+
+                            ${p.cliente}
+
+                            <br>
+
+                            <span class="small">
+
+                                ${p.contato || ""}
+
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            ${p.obra || "—"}
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                class="badge ${p.status}"
+                            >
+
+                                ${statusNome[p.status]}
+
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            ${formatDate(p.entrega)}
+
+                        </div>
+
+
+                        <div>
+
+                            <button
+                                class="danger"
+                                onclick="remover(${i})"
+                            >
+
+                                Excluir
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+}
+
+
+
+/* =========================================================
+   RENDERIZAR PAINEL
+========================================================= */
+
+function renderPanel() {
+
+
+    const board =
+        document
+            .getElementById("board");
+
+
+
+    /*
+       Atualiza contadores
+    */
+
+    document
+        .getElementById("cAndamento")
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "andamento"
+        ).length;
+
+
+
+    document
+        .getElementById("cFinalizado")
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "finalizado"
+        ).length;
+
+
+
+    document
+        .getElementById("cFuturo")
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "futuro"
+        ).length;
+
+
+
+    document
+        .getElementById("cAtrasado")
+        .textContent =
+
+        processos.filter(
+            p =>
+                p.status ===
+                "atrasado"
+        ).length;
+
+
+
+    /*
+       Nenhum processo
+    */
+
+    if (
+        !processos.length
+    ) {
+
+        board.innerHTML =
+
+            `
+            <div class="empty">
+
+                Nenhum processo cadastrado.
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+
+    /*
+       Cria os cards
+    */
+
+    board.innerHTML =
+
+        processos
+            .map(
+                p => `
+
+                    <article
+                        class="card ${p.status}"
+                    >
+
+
+                        <div class="top">
+
+
+                            <div class="code">
+
+                                ${p.codigo}
+
+                            </div>
+
+
+                            <div
+                                class="badge ${p.status}"
+                            >
+
+                                ${statusNome[p.status]}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="client">
+
+                            ${p.cliente}
+
+                        </div>
+
+
+
+                        <div class="info">
+
+                            Obra:
+                            ${p.obra || "—"}
+
+                            <br>
+
+
+                            Contato:
+                            ${p.contato || "—"}
+
+                            <br>
+
+
+                            Serviço:
+                            ${p.servico || "—"}
+
+                            <br>
+
+
+                            Faturamento:
+                            ${p.faturamento || "—"}
+
+                        </div>
+
+
+
+                        <div class="delivery">
+
+                            Entrega:
+                            ${formatDate(p.entrega)}
+
+                        </div>
+
+
+
+                        ${
+                            p.operacional
+
+                            ?
+
+                            `
+                            <div
+                                class="info"
+                                style="margin-top:8px"
+                            >
+
+                                <b>
+                                    ${p.operacional}
+                                </b>
+
+                            </div>
+                            `
+
+                            :
+
+                            ""
+                        }
+
+
+
+                        ${
+                            p.observacao
+
+                            ?
+
+                            `
+                            <div
+                                class="info"
+                                style="margin-top:5px"
+                            >
+
+                                ${p.observacao}
+
+                            </div>
+                            `
+
+                            :
+
+                            ""
+                        }
+
+
+                    </article>
+
+                `
+            )
+            .join("");
+
+}
+
+
+
+/* =========================================================
+   RENDERIZA TUDO
+========================================================= */
+
+function render() {
+
+    renderInput();
+
+    renderPanel();
+
+}
+
+
+
+/* =========================================================
+   RELÓGIO
+========================================================= */
+
+function atualizarRelogio() {
+
+
+    const agora =
+        new Date();
+
+
+    document
+        .getElementById("clock")
+        .textContent =
+
+        agora.toLocaleTimeString(
+            "pt-BR",
+            {
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit"
+            }
+        );
+
+}
+
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+render();
+
+
+atualizarRelogio();
+
+
+setInterval(
+    atualizarRelogio,
+    1000
+);
+
+</script>
+
+</body>
+</html>
